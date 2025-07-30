@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <title>پنل مدیریت</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>پنل مدیریت</h1>
+    <nav>
+      <a href="index.html">خانه</a>
+      <a href="cart.html">سبد خرید</a>
+      <a href="profile.html">پروفایل</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>افزودن محصول جدید</h2>
+    <form id="product-form">
+      <input type="text" id="product-name" placeholder="نام محصول" required />
+      <input type="number" id="product-price" placeholder="قیمت (تومان)" required />
+      <select id="product-category" required>
+        <option value="">انتخاب دسته‌بندی</option>
+        <option value="mobile">موبایل</option>
+        <option value="audio">صوتی</option>
+      </select>
+      <button type="submit">افزودن</button>
+    </form>
+
+    <h2>لیست محصولات</h2>
+    <div id="product-list"></div>
+  </main>
+
+  <script>
+    const form = document.getElementById('product-form');
+    const list = document.getElementById('product-list');
+
+    function loadProducts() {
+      const products = JSON.parse(localStorage.getItem('products')) || [];
+      list.innerHTML = '';
+      products.forEach((product, index) => {
+        const item = document.createElement('div');
+        item.style.border = '1px solid #ccc';
+        item.style.padding = '10px';
+        item.style.margin = '10px 0';
+        item.innerHTML = `
+          <strong>${product.name}</strong> - ${product.price.toLocaleString()} تومان 
+          (${product.category}) 
+          <button onclick="deleteProduct(${index})">حذف</button>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function deleteProduct(index) {
+      const products = JSON.parse(localStorage.getItem('products')) || [];
+      products.splice(index, 1);
+      localStorage.setItem('products', JSON.stringify(products));
+      loadProducts();
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('product-name').value.trim();
+      const price = parseInt(document.getElementById('product-price').value);
+      const category = document.getElementById('product-category').value;
+
+      if (!name || !price || !category) return;
+
+      const products = JSON.parse(localStorage.getItem('products')) || [];
+      products.push({ name, price, category });
+      localStorage.setItem('products', JSON.stringify(products));
+
+      form.reset();
+      loadProducts();
+    });
+
+    loadProducts();
+  </script>
+</body>
+</html>
