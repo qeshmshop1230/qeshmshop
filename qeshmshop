@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>فروشگاه من</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>فروشگاه ساده من</h1>
+    <nav>
+      <a href="index.html">خانه</a>
+      <a href="cart.html">سبد خرید</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>محصولات</h2>
+    <div class="products">
+      <div class="product">
+        <h3>گوشی موبایل</h3>
+        <p>قیمت: ۱۰٬۰۰۰٬۰۰۰ تومان</p>
+        <button onclick="addToCart('گوشی موبایل', 10000000)">افزودن به سبد خرید</button>
+      </div>
+      <div class="product">
+        <h3>هدفون</h3>
+        <p>قیمت: ۲٬۰۰۰٬۰۰۰ تومان</p>
+        <button onclick="addToCart('هدفون', 2000000)">افزودن به سبد خرید</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
