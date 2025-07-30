@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <title>ثبت‌نام</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>ثبت‌نام</h1>
+    <nav>
+      <a href="index.html">خانه</a>
+      <a href="login.html">ورود</a>
+    </nav>
+  </header>
+
+  <main>
+    <form id="signup-form">
+      <label for="username">نام کاربری:</label><br />
+      <input type="text" id="username" name="username" required /><br /><br />
+
+      <label for="email">ایمیل:</label><br />
+      <input type="email" id="email" name="email" required /><br /><br />
+
+      <label for="password">رمز عبور:</label><br />
+      <input type="password" id="password" name="password" required /><br /><br />
+
+      <button type="submit">ثبت‌نام</button>
+    </form>
+    <p id="message" style="margin-top: 20px;"></p>
+  </main>
+
+  <script>
+    const form = document.getElementById('signup-form');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const username = form.username.value.trim();
+      const email = form.email.value.trim();
+      const password = form.password.value;
+
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+
+      if (users.some(user => user.email === email)) {
+        message.style.color = 'red';
+        message.textContent = 'این ایمیل قبلا ثبت شده است.';
+        return;
+      }
+
+      users.push({ username, email, password });
+      localStorage.setItem('users', JSON.stringify(users));
+
+      message.style.color = 'green';
+      message.textContent = 'ثبت‌نام با موفقیت انجام شد! حالا می‌توانید وارد شوید.';
+      form.reset();
+    });
+  </script>
+</body>
+</html>
