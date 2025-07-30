@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <title>تماس با ما</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>تماس با ما</h1>
+    <nav>
+      <a href="index.html">خانه</a>
+      <a href="signup.html">ثبت‌نام</a>
+      <a href="login.html">ورود</a>
+      <a href="cart.html">سبد خرید</a>
+    </nav>
+  </header>
+
+  <main>
+    <form id="contact-form">
+      <label for="name">نام شما:</label><br />
+      <input type="text" id="name" name="name" required /><br /><br />
+
+      <label for="email">ایمیل شما:</label><br />
+      <input type="email" id="email" name="email" required /><br /><br />
+
+      <label for="message">پیام شما:</label><br />
+      <textarea id="message" name="message" rows="5" required></textarea><br /><br />
+
+      <button type="submit">ارسال پیام</button>
+    </form>
+    <p id="response-message" style="margin-top: 20px;"></p>
+  </main>
+
+  <script>
+    const form = document.getElementById('contact-form');
+    const responseMessage = document.getElementById('response-message');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // اینجا می‌تونیم پیام رو ذخیره یا به سرور بفرستیم؛ فعلاً فقط پیام موفقیت نمایش می‌دیم
+      responseMessage.style.color = 'green';
+      responseMessage.textContent = 'پیام شما با موفقیت ارسال شد!';
+
+      form.reset();
+    });
+  </script>
+</body>
+</html>
