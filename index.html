@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>فروشگاه من</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
@@ -16,24 +16,52 @@
   </header>
 
   <main>
-    <input type="text" id="search-input" placeholder="جستجوی محصول..." style="width: 50%; padding: 10px; margin: 20px auto; display: block;">
+    <input
+      type="text"
+      id="search-input"
+      placeholder="جستجوی محصول..."
+      style="width: 50%; padding: 10px; margin: 20px auto; display: block;"
+    />
+
+    <div
+      id="filters"
+      style="text-align: center; margin: 20px 0;"
+    >
+      <select id="category-filter">
+        <option value="all">همه دسته‌ها</option>
+        <option value="mobile">موبایل</option>
+        <option value="audio">لوازم صوتی</option>
+      </select>
+
+      <select id="price-filter">
+        <option value="all">همه قیمت‌ها</option>
+        <option value="under3">زیر ۳ میلیون</option>
+        <option value="under10">زیر ۱۰ میلیون</option>
+      </select>
+    </div>
 
     <h2>محصولات</h2>
     <div class="products">
-      <div class="product">
+      <div class="product mobile">
         <h3>گوشی موبایل</h3>
         <p>قیمت: ۱۰٬۰۰۰٬۰۰۰ تومان</p>
-        <button onclick="addToCart('گوشی موبایل', 10000000)">افزودن به سبد خرید</button>
+        <button onclick="addToCart('گوشی موبایل', 10000000)">
+          افزودن به سبد خرید
+        </button>
       </div>
-      <div class="product">
+
+      <div class="product audio">
         <h3>هدفون</h3>
         <p>قیمت: ۲٬۰۰۰٬۰۰۰ تومان</p>
         <button onclick="addToCart('هدفون', 2000000)">افزودن به سبد خرید</button>
       </div>
-      <div class="product">
+
+      <div class="product audio">
         <h3>اسپیکر بلوتوث</h3>
         <p>قیمت: ۱٬۵۰۰٬۰۰۰ تومان</p>
-        <button onclick="addToCart('اسپیکر بلوتوث', 1500000)">افزودن به سبد خرید</button>
+        <button onclick="addToCart('اسپیکر بلوتوث', 1500000)">
+          افزودن به سبد خرید
+        </button>
       </div>
     </div>
   </main>
@@ -45,11 +73,44 @@
     searchInput.addEventListener('input', function () {
       const searchTerm = this.value.toLowerCase();
       const products = document.querySelectorAll('.product');
-      products.forEach(product => {
+      products.forEach((product) => {
         const title = product.querySelector('h3').textContent.toLowerCase();
         product.style.display = title.includes(searchTerm) ? 'block' : 'none';
       });
     });
+
+    // فیلتر محصولات بر اساس دسته و قیمت
+    const categoryFilter = document.getElementById('category-filter');
+    const priceFilter = document.getElementById('price-filter');
+
+    function filterProducts() {
+      const category = categoryFilter.value;
+      const price = priceFilter.value;
+      const products = document.querySelectorAll('.product');
+
+      products.forEach((product) => {
+        const inCategory = category === 'all' || product.classList.contains(category);
+
+        const priceText = product.querySelector('p').textContent;
+        const priceMatch = priceText.match(/(\d[\d٬]*)/);
+        let productPrice = 0;
+        if (priceMatch) {
+          productPrice = Number(priceMatch[1].replace(/٬/g, ''));
+        }
+
+        let inPrice = true;
+        if (price === 'under3') {
+          inPrice = productPrice < 3000000;
+        } else if (price === 'under10') {
+          inPrice = productPrice < 10000000;
+        }
+
+        product.style.display = inCategory && inPrice ? 'block' : 'none';
+      });
+    }
+
+    categoryFilter.addEventListener('change', filterProducts);
+    priceFilter.addEventListener('change', filterProducts);
   </script>
 </body>
 </html>
