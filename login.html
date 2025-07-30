@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <title>ورود</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>ورود</h1>
+    <nav>
+      <a href="index.html">خانه</a>
+      <a href="signup.html">ثبت‌نام</a>
+    </nav>
+  </header>
+
+  <main>
+    <form id="login-form">
+      <label for="email">ایمیل:</label><br />
+      <input type="email" id="email" name="email" required /><br /><br />
+
+      <label for="password">رمز عبور:</label><br />
+      <input type="password" id="password" name="password" required /><br /><br />
+
+      <button type="submit">ورود</button>
+    </form>
+    <p id="message" style="margin-top: 20px;"></p>
+  </main>
+
+  <script>
+    const form = document.getElementById('login-form');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = form.email.value.trim();
+      const password = form.password.value;
+
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      const user = users.find(user => user.email === email && user.password === password);
+
+      if (user) {
+        message.style.color = 'green';
+        message.textContent = 'ورود موفقیت‌آمیز بود. خوش آمدید، ' + user.username + '!';
+        form.reset();
+      } else {
+        message.style.color = 'red';
+        message.textContent = 'ایمیل یا رمز عبور اشتباه است.';
+      }
+    });
+  </script>
+</body>
+</html>
