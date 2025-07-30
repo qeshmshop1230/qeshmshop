@@ -1,39 +1,75 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>سبد خرید</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
     <h1>سبد خرید</h1>
     <nav>
       <a href="index.html">خانه</a>
-      <a href="cart.html">سبد خرید</a>
+      <a href="signup.html">ثبت‌نام</a>
+      <a href="login.html">ورود</a>
     </nav>
   </header>
 
   <main>
-    <h2>محصولات در سبد خرید</h2>
-    <ul id="cart-list"></ul>
-    <p id="total"></p>
+    <h2>محصولات داخل سبد</h2>
+    <div id="cart-items"></div>
+
+    <h3>مجموع قیمت: <span id="total-price">۰</span> تومان</h3>
+
+    <button id="clear-cart">خالی کردن سبد خرید</button>
   </main>
 
   <script>
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const cartList = document.getElementById('cart-list');
-    const totalEl = document.getElementById('total');
-    let total = 0;
+    function loadCart() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const cartItemsDiv = document.getElementById('cart-items');
+      const totalPriceSpan = document.getElementById('total-price');
 
-    cart.forEach(item => {
-      const li = document.createElement('li');
-      li.textContent = `${item.name} - ${item.price.toLocaleString()} تومان`;
-      cartList.appendChild(li);
-      total += item.price;
+      cartItemsDiv.innerHTML = '';
+      let total = 0;
+
+      if (cart.length === 0) {
+        cartItemsDiv.innerHTML = '<p>سبد خرید شما خالی است.</p>';
+      } else {
+        cart.forEach((item, index) => {
+          total += item.price;
+
+          const itemDiv = document.createElement('div');
+          itemDiv.style.border = '1px solid #ccc';
+          itemDiv.style.padding = '10px';
+          itemDiv.style.marginBottom = '10px';
+
+          itemDiv.innerHTML = `
+            <strong>${item.name}</strong><br/>
+            قیمت: ${item.price.toLocaleString()} تومان<br/>
+            <button onclick="removeFromCart(${index})">حذف</button>
+          `;
+
+          cartItemsDiv.appendChild(itemDiv);
+        });
+      }
+
+      totalPriceSpan.textContent = total.toLocaleString();
+    }
+
+    function removeFromCart(index) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      loadCart();
+    }
+
+    document.getElementById('clear-cart').addEventListener('click', () => {
+      localStorage.removeItem('cart');
+      loadCart();
     });
 
-    totalEl.textContent = `جمع کل: ${total.toLocaleString()} تومان`;
+    loadCart();
   </script>
 </body>
 </html>
